@@ -16,6 +16,14 @@ module Filtering
     def before_actions
       @before_actions ||= []
     end
+
+    def after_action(method)
+      after_actions << method
+    end
+
+    def after_actions
+      @after_actions ||= []
+    end
   end
 
   def process(action_name)
@@ -26,5 +34,6 @@ module Filtering
     # of the class that includes this methiod
     self.class.before_actions.each { |method| send method }
     super
+    self.class.after_actions.each { |method| send method }
   end
 end

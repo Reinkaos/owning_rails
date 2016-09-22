@@ -1,0 +1,186 @@
+Adding a method to a single instance of a class
+
+s = 'string'
+
+def s.method
+  # This method only exists on the s instance of the string class
+end
+
+Whenver there is no reciever, it's always the same as self.method
+
+Ie puts '1' is self.puts '1'
+
+The difference between extend and include is that include will add instance methods and extend will add methods at the class level.
+
+Modules are used to create namespaces.
+
+has_many :roles, dependent: :destroy
+#Is the same as
+self.has_many(:roles {dependent: :destroy})
+
+module ActiveRecord
+  class Base
+    def self.has_many(names, options)
+      p [name, options]
+    end
+  end
+end
+
+# Procs and Blocks
+
+my_proc = proc { puts "yeah" }
+my_proc.call
+my_proc.() # Will also work
+
+# Procs are used for wrapping a block of ruby code inside a variable
+
+my_proc = lambda { |x| puts "yeah" }
+# lambda will error when its not passed the right number of arguments, a proc will not
+
+# Blocks are not objects, interesting
+
+# Lambda returns will return from the block of code
+# procs will return from the inclosing method, so it's better to use lambda most of the time
+
+You can also define a lambda like this
+
+my_proc = -> { puts x }
+my_proc.call
+
+Or with arguments like this
+
+my_proc = ->(x) { puts x }
+
+# Yeild can be used like this
+
+def hug
+  puts "{"
+  yield
+  puts "}"
+end
+
+hug { puts "me" }
+
+Or you can do this, this is a bit more expensive as everytime it's run it creates a proc with the &block notation
+It is preferable to use yield
+
+def hug(&block)
+  block.call
+end
+
+hug { puts 'me' }
+
+
+# For instance
+
+Router.new.routes do
+  match "/users" => 'users#index'
+  match "/login" => 'sessions#new'
+end
+
+class Router
+  def initialize
+  @routes = {}
+  end
+
+  def match(route)
+    # You can use update to merge hashes,
+    # @routes is a hash, route is  hash
+    @routes.update route
+  end
+
+  # This allows the passed block to run in the instance of the class
+  # & converts the incoming block to a proc,
+  # In a method call it will convert a proc back to block
+  # This is how they create DSLs
+  def routes(&the_proc)
+    instance_eval(&the_proc)
+    p @routes
+  end
+end
+
+# If you use yield in the above method, the block will execute in it's called context, which is the main:Object. Which we do not want.
+
+Router.new.instance_eval { p @routes }
+
+# The difference between merge and update is that merge will create a new copy, merge! will update the object in place and update will do the same thing
+
+
+ActionView is for the Views
+ActiveRecord and ActionRecord are for the Model
+ActionController & ActionDispactch is for the controller
+
+
+# Design Patterns in Rails
+
+# Books
+
+# Patterns of enterprise application Architecture by Martin Fowler
+# Design Patterns, Elements for Resuable Object Orientated Software (Quite Dated)
+# Design Patterns in Ruby by Russ Olsen
+
+# Number 1
+
+# Active Record
+# This comes straight from Matin Fowler
+
+# Rack
+
+Rack is a specification / protocol that defines how the webserver talks to the framework
+
+class MyApp
+  # Env is the request info hash
+  # The body has to be an array to comply with Rack
+  def call(env)
+    [
+      200,
+      { 'content-type' => 'text/plain' },
+      ['you requested' + env['PATH_INFO']]
+    ]
+  end
+end
+
+# The way a web server works, like thin or unicorn etc
+
+class Server
+  def process_request(socket)
+    # Read data sent by browser
+    data = socket.read
+
+    # Parse the data to a Hash
+    env = parse(read)
+
+    # Call the app (IE RAILS)
+    status,headers.body = app.call(env)
+
+    # Send the response to the browser
+    socket.write "HTTP/1.1 #{status} ..."
+  end
+end
+
+# config.ru is what boots up the app on the server
+# run is specifc to Rack
+# .ru is a rack file, it means rack up
+
+require ::File.expand_path('../config/environment', __FILE__)
+runs Rails.application
+
+# The double colon implies that it is loading Rack::File as it is in this file and it has a hidden namespace
+
+::File is the same as Object::File
+
+# Class names are just constants
+Application = Class.new do
+  # Is what is happening
+end
+
+# When trying to load classes that are missing, this method will be called in Rails
+
+class Object
+  def const_missing(name)
+    require name.to_s.downcase
+  end
+end
+
+
+# You are up to 1:04 in video 1.

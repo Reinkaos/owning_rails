@@ -184,3 +184,37 @@ end
 
 
 # You are up to 1:04 in video 1.
+
+# before_action is designed using the implementing filter design pattern
+
+
+# Overriding methods in modules
+
+class Parent
+  def say
+    puts "Parent"
+  end
+end
+
+module A
+  def say
+    puts "a"
+    super
+  end
+end
+
+class Child < Parent
+  include A
+end
+
+child = Child.new
+child.say
+'Parent'
+
+'A'
+
+# In Ruby 2.0 you can do this, instead of having to create the child class which inherits parent and includes the module
+
+class Parent
+  prepend A # This instead of include will allow you to overide methods in modules
+end

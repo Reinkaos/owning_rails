@@ -1,4 +1,5 @@
 require 'filtering'
+require 'rendering'
 
 module ActionController
   # This class is used so that we can override methods in modules
@@ -15,5 +16,6 @@ module ActionController
   # All the modules are included here
   class Base < Metal
     include Filtering
+    include Rendering
   end
 end

@@ -1,8 +1,10 @@
+require 'active_model'
 require 'connection_adapter'
 
 module ActiveRecord
   # patterns/lib/active_record.rb
   class Base
+    include ActiveModel::Validations
     CONNECTION = SqliteAdapter.new
 
     def initialize(attributes = {})

@@ -44,6 +44,8 @@ module Filtering
   extend ActiveSupport::Concern
   include ActiveSupport::Callbacks
 
+  # This includes things at the class level
+  # IE validates :token, or before_action :something
   included do
     define_callbacks :process
   end

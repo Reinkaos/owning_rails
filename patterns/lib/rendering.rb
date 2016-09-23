@@ -20,6 +20,7 @@ module Rendering
     # Templates compile the template string to ruby code
     # Then eval it within the context of the variables by using binding.
     # eval(template.src, binding)
+    # Rails has a less expensive way of doing the eval
   end
 
   def template_path(action)

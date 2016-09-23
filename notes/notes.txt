@@ -218,3 +218,10 @@ child.say
 class Parent
   prepend A # This instead of include will allow you to overide methods in modules
 end
+
+# Recap
+
+Active Record is inside of the Activ Record Gem
+Front Controller is inside of ActionDispatch
+Interceptig Filter is inside of ActionController
+TemplateView is inside of ActionView

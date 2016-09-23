@@ -225,3 +225,18 @@ Active Record is inside of the Activ Record Gem
 Front Controller is inside of ActionDispatch
 Interceptig Filter is inside of ActionController
 TemplateView is inside of ActionView
+
+# Day 2
+
+To open gems you can run `bundle open gemname`
+To list dependancies of a gem 'gem dep gemname -v=version' IE gem dep rails -v=4.2.4
+You can also do gem edit gemname, but this will always open the latest version on your system.
+Bundle open will open the version that you are currently using in your Rails Application.
+
+ActionPack has these modules
+ActionController for app/controllers
+ActionDispatch for config/routes.rb
+
+Railties contains all of the glue code that 'ties' rails together
+it has all the config code
+Application / Engine
